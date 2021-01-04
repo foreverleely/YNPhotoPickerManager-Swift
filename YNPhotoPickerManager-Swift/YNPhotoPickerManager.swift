@@ -13,7 +13,7 @@ import Photos
 
 typealias OperationBlock = () -> ()
 
-class YNPhotoPickerManager: NSObject {
+public class YNPhotoPickerManager: NSObject {
     
     //MARK: Permission
     
@@ -167,14 +167,14 @@ class YNPhotoPickerManager: NSObject {
 
 extension YNPhotoPickerManager: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         imagePicker.dismiss(animated: true) {[weak self] in
             self?.finishPickingMediaWithInfo(info)
         }
     }
     
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         
         imagePicker.dismiss(animated: true, completion: nil)
     }
