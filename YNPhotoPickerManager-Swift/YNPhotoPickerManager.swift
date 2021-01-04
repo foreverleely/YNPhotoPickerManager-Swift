@@ -47,11 +47,15 @@ public class YNPhotoPickerManager: NSObject {
                 self.cameraPermissions(authorizedBlock: authorizedBlock, vc: vc)
             })
         } else if authStatus == .authorized {
-            if authorizedBlock != nil {
-                authorizedBlock!()
+            DispatchQueue.main.async {
+                if authorizedBlock != nil {
+                    authorizedBlock!()
+                }
             }
         } else {
-            self.showAuthorizationAlert(isCamera: true, isPhotoRead: true, vc: vc, cancel: nil)
+            DispatchQueue.main.async {
+                self.showAuthorizationAlert(isCamera: true, isPhotoRead: true, vc: vc, cancel: nil)
+            }
         }
     }
     
@@ -66,12 +70,16 @@ public class YNPhotoPickerManager: NSObject {
                 self.cameraPermissions(authorizedBlock: authorizedBlock, deniedBlock: deniedBlock)
             })
         } else if authStatus == .authorized {
-            if authorizedBlock != nil {
-                authorizedBlock!()
+            DispatchQueue.main.async {
+                if authorizedBlock != nil {
+                    authorizedBlock!()
+                }
             }
         } else {
-            if deniedBlock != nil {
-                deniedBlock!()
+            DispatchQueue.main.async {
+                if deniedBlock != nil {
+                    deniedBlock!()
+                }
             }
         }
     }
@@ -87,11 +95,16 @@ public class YNPhotoPickerManager: NSObject {
                 self.photoAlbumPermissions(authorizedBlock: authorizedBlock, vc: vc)
             }
         } else if authStatus == .authorized  {
-            if authorizedBlock != nil {
-                authorizedBlock!()
+            DispatchQueue.main.async {
+                if authorizedBlock != nil {
+                    authorizedBlock!()
+                }
             }
+            
         } else {
-            self.showAuthorizationAlert(isCamera: false, isPhotoRead: true, vc: vc, cancel: nil)
+            DispatchQueue.main.async {
+                self.showAuthorizationAlert(isCamera: false, isPhotoRead: true, vc: vc, cancel: nil)
+            }
         }
     }
     
@@ -106,12 +119,17 @@ public class YNPhotoPickerManager: NSObject {
                 self.photoAlbumPermissions(authorizedBlock: authorizedBlock, deniedBlock: deniedBlock)
             }
         } else if authStatus == .authorized  {
-            if authorizedBlock != nil {
-                authorizedBlock!()
+            DispatchQueue.main.async {
+                if authorizedBlock != nil {
+                    authorizedBlock!()
+                }
             }
+            
         } else {
-            if deniedBlock != nil {
-                deniedBlock!()
+            DispatchQueue.main.async {
+                if deniedBlock != nil {
+                    deniedBlock!()
+                }
             }
         }
     }
