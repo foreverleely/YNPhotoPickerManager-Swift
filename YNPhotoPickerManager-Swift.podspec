@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "YNPhotoPickerManager-Swift"
-  spec.version      = "0.0.1"
+  spec.version      = "1.0.1"
   spec.summary      = "YNPhotoPickerManager-Swift."
 
   spec.description  = "YNPhotoPickerManager-Swift."
@@ -27,13 +27,14 @@ Pod::Spec.new do |spec|
 
   spec.author       = { "liyangly" => "foreverleely@hotmail.com" }
  
-  spec.platform     = :ios, "8.0"
+  spec.ios.deployment_target = "11.0"
+  spec.swift_version = "5.0"
 
   spec.source       = { :git => "https://github.com/foreverleely/YNPhotoPickerManager-Swift.git", :tag => "#{spec.version}" }
 
   spec.source_files = "YNPhotoPickerManager-Swift/*.swift"
 
-  spec.frameworks   = "Photos", "UIKit", "Foundation", "AVFoundation"
+  spec.static_framework = true
 
 
 end
