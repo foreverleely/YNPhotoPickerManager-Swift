@@ -11,13 +11,32 @@ import UIKit
 import AVFoundation
 import Photos
 
-typealias OperationBlock = () -> ()
+public typealias YNOperationBlock = () -> ()
 
-class YNPhotoPickerManager: NSObject {
+public class YNPhotoPickerManager: NSObject {
+    
+    public static let share = YNPhotoPickerManager()
+    
+    //MARK: openCarema / openAlbum
+    public func openCaremaPresentFrom(_ vc: UIViewController) {
+        
+        cameraPermissions(authorizedBlock: {
+            self.imagePicker.sourceType = UIImagePickerController.SourceType.camera
+            vc.present(self.imagePicker, animated: true, completion: nil)
+        }, vc: vc)
+    }
+    
+    public func openAlbumPresentFrom(_ vc: UIViewController) {
+        
+        photoAlbumPermissions(authorizedBlock: {
+            self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
+            vc.present(self.imagePicker, animated: true, completion: nil)
+        }, vc: vc)
+    }
     
     //MARK: Permission
     
-    public class func cameraPermissions(authorizedBlock: OperationBlock?, vc: UIViewController) {
+    public func cameraPermissions(authorizedBlock: YNOperationBlock?, vc: UIViewController) {
         
         let authStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
         
@@ -36,7 +55,7 @@ class YNPhotoPickerManager: NSObject {
         }
     }
     
-    public class func cameraPermissions(authorizedBlock: OperationBlock?, deniedBlock: OperationBlock?) {
+    public func cameraPermissions(authorizedBlock: YNOperationBlock?, deniedBlock: YNOperationBlock?) {
         
         let authStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
         
@@ -57,7 +76,7 @@ class YNPhotoPickerManager: NSObject {
         }
     }
     
-    public class func photoAlbumPermissions(authorizedBlock: OperationBlock?, vc: UIViewController) {
+    public func photoAlbumPermissions(authorizedBlock: YNOperationBlock?, vc: UIViewController) {
         
         let authStatus = PHPhotoLibrary.authorizationStatus()
         
@@ -76,7 +95,7 @@ class YNPhotoPickerManager: NSObject {
         }
     }
     
-    public class func photoAlbumPermissions(authorizedBlock: OperationBlock?, deniedBlock: OperationBlock?) {
+    public func photoAlbumPermissions(authorizedBlock: YNOperationBlock?, deniedBlock: YNOperationBlock?) {
         
         let authStatus = PHPhotoLibrary.authorizationStatus()
         
@@ -99,7 +118,7 @@ class YNPhotoPickerManager: NSObject {
     
     //MARK: showAuthorizationAlert
     
-    public class func showAuthorizationAlert(isCamera: Bool, isPhotoRead: Bool, vc: UIViewController, cancel: OperationBlock?) {
+    public func showAuthorizationAlert(isCamera: Bool, isPhotoRead: Bool, vc: UIViewController, cancel: YNOperationBlock?) {
         
         if let infoDict = Bundle.main.infoDictionary {
             
@@ -123,7 +142,7 @@ class YNPhotoPickerManager: NSObject {
         }
     }
     
-    public class func showAuthorizationAlert(title: String, message: String, vc: UIViewController, cancel: OperationBlock?) {
+    public func showAuthorizationAlert(title: String, message: String, vc: UIViewController, cancel: YNOperationBlock?) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { (_) in
@@ -143,7 +162,7 @@ class YNPhotoPickerManager: NSObject {
     
     //MARK: Picker
     
-    public lazy var imagePicker: UIImagePickerController = {
+    lazy var imagePicker: UIImagePickerController = {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         return imagePicker
@@ -151,30 +170,18 @@ class YNPhotoPickerManager: NSObject {
     
     public var finishPickingMediaWithInfo: ([UIImagePickerController.InfoKey: Any]) -> () = {info in}
     
-    
-    public func openCaremaPresentFrom(_ vc: UIViewController) {
-        
-        imagePicker.sourceType = UIImagePickerController.SourceType.camera
-        vc.present(imagePicker, animated: true, completion: nil)
-    }
-    
-    public func openAlbumPresentFrom(_ vc: UIViewController) {
-        
-        imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
-        vc.present(imagePicker, animated: true, completion: nil)
-    }
 }
 
 extension YNPhotoPickerManager: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         imagePicker.dismiss(animated: true) {[weak self] in
             self?.finishPickingMediaWithInfo(info)
         }
     }
     
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         
         imagePicker.dismiss(animated: true, completion: nil)
     }

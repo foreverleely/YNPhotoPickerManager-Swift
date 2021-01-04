@@ -14,31 +14,26 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        
+        YNPhotoPickerManager.share.finishPickingMediaWithInfo = {[weak self] info in
+            if let image = info[UIImagePickerController.InfoKey.originalImage] {
+                print(image)
+            }
+        }
     }
     
     func openCamera() {
         
-        YNPhotoPickerManager.cameraPermissions(authorizedBlock: {
-            self.imgaePicker.openCaremaPresentFrom(self)
+        YNPhotoPickerManager.share.cameraPermissions(authorizedBlock: {
+            YNPhotoPickerManager.share.openCaremaPresentFrom(self)
         }, vc: self)
     }
     
     func openAlbum() {
         
-        YNPhotoPickerManager.photoAlbumPermissions(authorizedBlock: {
-            self.imgaePicker.openAlbumPresentFrom(self)
+        YNPhotoPickerManager.share.photoAlbumPermissions(authorizedBlock: {
+            YNPhotoPickerManager.share.openAlbumPresentFrom(self)
         }, vc: self)
     }
 
-    lazy var imgaePicker: YNPhotoPickerManager = {
-        let imagePicker = YNPhotoPickerManager()
-        imagePicker.finishPickingMediaWithInfo = {[weak self] info in
-            if let image = info[UIImagePickerController.InfoKey.originalImage] {
-                print(image)
-            }
-        }
-        return imagePicker
-    }()
 }
 
