@@ -13,11 +13,11 @@ import Photos
 
 typealias OperationBlock = () -> ()
 
-public class YNPhotoPickerManager: NSObject {
+class YNPhotoPickerManager: NSObject {
     
     //MARK: Permission
     
-    class func cameraPermissions(authorizedBlock: OperationBlock?, vc: UIViewController) {
+    public class func cameraPermissions(authorizedBlock: OperationBlock?, vc: UIViewController) {
         
         let authStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
         
@@ -36,7 +36,7 @@ public class YNPhotoPickerManager: NSObject {
         }
     }
     
-    class func cameraPermissions(authorizedBlock: OperationBlock?, deniedBlock: OperationBlock?) {
+    public class func cameraPermissions(authorizedBlock: OperationBlock?, deniedBlock: OperationBlock?) {
         
         let authStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
         
@@ -57,7 +57,7 @@ public class YNPhotoPickerManager: NSObject {
         }
     }
     
-    class func photoAlbumPermissions(authorizedBlock: OperationBlock?, vc: UIViewController) {
+    public class func photoAlbumPermissions(authorizedBlock: OperationBlock?, vc: UIViewController) {
         
         let authStatus = PHPhotoLibrary.authorizationStatus()
         
@@ -76,7 +76,7 @@ public class YNPhotoPickerManager: NSObject {
         }
     }
     
-    class func photoAlbumPermissions(authorizedBlock: OperationBlock?, deniedBlock: OperationBlock?) {
+    public class func photoAlbumPermissions(authorizedBlock: OperationBlock?, deniedBlock: OperationBlock?) {
         
         let authStatus = PHPhotoLibrary.authorizationStatus()
         
@@ -99,7 +99,7 @@ public class YNPhotoPickerManager: NSObject {
     
     //MARK: showAuthorizationAlert
     
-    class func showAuthorizationAlert(isCamera: Bool, isPhotoRead: Bool, vc: UIViewController, cancel: OperationBlock?) {
+    public class func showAuthorizationAlert(isCamera: Bool, isPhotoRead: Bool, vc: UIViewController, cancel: OperationBlock?) {
         
         if let infoDict = Bundle.main.infoDictionary {
             
@@ -123,7 +123,7 @@ public class YNPhotoPickerManager: NSObject {
         }
     }
     
-    class func showAuthorizationAlert(title: String, message: String, vc: UIViewController, cancel: OperationBlock?) {
+    public class func showAuthorizationAlert(title: String, message: String, vc: UIViewController, cancel: OperationBlock?) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { (_) in
@@ -143,22 +143,22 @@ public class YNPhotoPickerManager: NSObject {
     
     //MARK: Picker
     
-    lazy var imagePicker: UIImagePickerController = {
+    public lazy var imagePicker: UIImagePickerController = {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         return imagePicker
     }()
     
-    var finishPickingMediaWithInfo: ([UIImagePickerController.InfoKey: Any]) -> () = {info in}
+    public var finishPickingMediaWithInfo: ([UIImagePickerController.InfoKey: Any]) -> () = {info in}
     
     
-    func openCaremaPresentFrom(_ vc: UIViewController) {
+    public func openCaremaPresentFrom(_ vc: UIViewController) {
         
         imagePicker.sourceType = UIImagePickerController.SourceType.camera
         vc.present(imagePicker, animated: true, completion: nil)
     }
     
-    func openAlbumPresentFrom(_ vc: UIViewController) {
+    public func openAlbumPresentFrom(_ vc: UIViewController) {
         
         imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
         vc.present(imagePicker, animated: true, completion: nil)
@@ -167,14 +167,14 @@ public class YNPhotoPickerManager: NSObject {
 
 extension YNPhotoPickerManager: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         imagePicker.dismiss(animated: true) {[weak self] in
             self?.finishPickingMediaWithInfo(info)
         }
     }
     
-    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         
         imagePicker.dismiss(animated: true, completion: nil)
     }
