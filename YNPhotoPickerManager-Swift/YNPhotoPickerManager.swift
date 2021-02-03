@@ -34,6 +34,15 @@ public class YNPhotoPickerManager: NSObject {
         }, vc: vc)
     }
     
+    public func openAlbumPresentFrom(_ vc: UIViewController, mediaTypes: [String]) {
+        // [kUTTypeMovie as String]
+        photoAlbumPermissions(authorizedBlock: {
+            self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
+            self.imagePicker.mediaTypes = mediaTypes
+            vc.present(self.imagePicker, animated: true, completion: nil)
+        }, vc: vc)
+    }
+    
     //MARK: Permission
     
     public func cameraPermissions(authorizedBlock: YNOperationBlock?, vc: UIViewController) {
