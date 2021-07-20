@@ -26,6 +26,15 @@ public class YNPhotoPickerManager: NSObject {
         }, vc: vc)
     }
     
+    public func openCaremaPresentFrom(_ vc: UIViewController, mediaTypes: [String]) {
+        
+        cameraPermissions(authorizedBlock: {
+            self.imagePicker.sourceType = UIImagePickerController.SourceType.camera
+            self.imagePicker.mediaTypes = mediaTypes
+            vc.present(self.imagePicker, animated: true, completion: nil)
+        }, vc: vc)
+    }
+    
     public func openAlbumPresentFrom(_ vc: UIViewController) {
         
         photoAlbumPermissions(authorizedBlock: {
